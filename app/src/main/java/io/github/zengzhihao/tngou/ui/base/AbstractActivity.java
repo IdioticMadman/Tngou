@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import io.github.zengzhihao.tngou.Application;
 import io.github.zengzhihao.tngou.core.rx.ScheduleTransformer;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Kela.King
@@ -31,13 +32,22 @@ public class AbstractActivity extends RxAppCompatActivity {
     }
 
     protected <T> Observable<T> bindToLifecycle$(Observable<T> observable) {
-        return _scheduleTransformer.bindObservable$(observable).compose(this.<T>bindToLifecycle
+        return _scheduleTransformer.bindOnMainThread$(observable).compose(this.<T>bindToLifecycle
                 ());
     }
 
     protected <T> Observable<T> bindUntilEvent$(Observable<T> observable, ActivityEvent
             activityEvent) {
-        return _scheduleTransformer.bindObservable$(observable).compose(this.<T>bindUntilEvent
+        return _scheduleTransformer.bindOnMainThread$(observable).compose(this.<T>bindUntilEvent
                 (activityEvent));
+    }
+
+    protected <T> Observable<T> bindOnIOScheduler$(Observable<T> observable) {
+        return bindToLifecycle$(observable).subscribeOn(Schedulers.io());
+    }
+
+    protected <T> Observable<T> bindOnIOScheduler$(Observable<T> observable, ActivityEvent
+            activityEvent) {
+        return bindUntilEvent$(observable, activityEvent).subscribeOn(Schedulers.io());
     }
 }

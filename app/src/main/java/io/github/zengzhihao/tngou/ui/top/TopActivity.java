@@ -58,7 +58,7 @@ public class TopActivity extends AbstractActivity {
         _topAdapter = new TopAdapter(this, _result, _picasso);
         _listView.setAdapter(_topAdapter);
 
-        _subscription = bindUntilEvent$(_topService.list(), ActivityEvent.PAUSE).subscribe(new Observer<Top.Result>() {
+        _subscription = bindOnIOScheduler$(_topService.list(), ActivityEvent.PAUSE).subscribe(new Observer<Top.Result>() {
             @Override
             public void onCompleted() {
                 Timber.i("### onCompleted.");
@@ -78,7 +78,7 @@ public class TopActivity extends AbstractActivity {
 
         // unsubscribed until onDestroy()
         /**
-        bindToLifecycle$(_topService.list()).subscribe(new Observer<Top.Result>() {
+         bindOnIOScheduler$(_topService.list()).subscribe(new Observer<Top.Result>() {
             @Override
             public void onCompleted() {
                 Timber.i("### onCompleted.");
