@@ -31,13 +31,13 @@ public class AbstractActivity extends RxAppCompatActivity {
     }
 
     protected <T> Observable<T> bindToLifecycle$(Observable<T> observable) {
-        return _scheduleTransformer.bindOnMainThread$(observable).compose(this.<T>bindToLifecycle
+        return _scheduleTransformer.bindObservable$(observable).compose(this.<T>bindToLifecycle
                 ());
     }
 
     protected <T> Observable<T> bindUntilEvent$(Observable<T> observable, ActivityEvent
             activityEvent) {
-        return _scheduleTransformer.bindOnMainThread$(observable).compose(this.<T>bindUntilEvent
+        return _scheduleTransformer.bindObservable$(observable).compose(this.<T>bindUntilEvent
                 (activityEvent));
     }
 }

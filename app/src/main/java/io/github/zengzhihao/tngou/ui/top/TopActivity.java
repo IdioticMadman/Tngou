@@ -27,7 +27,6 @@ import io.github.zengzhihao.tngou.lib.api.service.TopService;
 import io.github.zengzhihao.tngou.ui.base.AbstractActivity;
 import rx.Observer;
 import rx.Subscription;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -59,47 +58,43 @@ public class TopActivity extends AbstractActivity {
         _topAdapter = new TopAdapter(this, _result, _picasso);
         _listView.setAdapter(_topAdapter);
 
-        _subscription = bindUntilEvent$(_topService.list(), ActivityEvent.PAUSE).subscribeOn
-                (Schedulers.io())
-                .subscribe(new Observer<Top.Result>() {
-                    @Override
-                    public void onCompleted() {
-                        Timber.i("### onCompleted.");
-                    }
+        _subscription = bindUntilEvent$(_topService.list(), ActivityEvent.PAUSE).subscribe(new Observer<Top.Result>() {
+            @Override
+            public void onCompleted() {
+                Timber.i("### onCompleted.");
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.e("### onError. error is %s", e);
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Timber.e("### onError. error is %s", e);
+            }
 
-                    @Override
-                    public void onNext(Top.Result result) {
-                        _result.addAll(result.getTngou());
-                        _topAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onNext(Top.Result result) {
+                _result.addAll(result.getTngou());
+                _topAdapter.notifyDataSetChanged();
+            }
+        });
 
         // unsubscribed until onDestroy()
         /**
-        bindToLifecycle$(_topService.list()).subscribeOn
-                (Schedulers.io())
-                .subscribe(new Observer<Top.Result>() {
-                    @Override
-                    public void onCompleted() {
-                        Timber.i("### onCompleted.");
-                    }
+        bindToLifecycle$(_topService.list()).subscribe(new Observer<Top.Result>() {
+            @Override
+            public void onCompleted() {
+                Timber.i("### onCompleted.");
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.e("### onError. error is %s", e);
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Timber.e("### onError. error is %s", e);
+            }
 
-                    @Override
-                    public void onNext(Top.Result result) {
-                        _result.addAll(result.getTngou());
-                        _topAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onNext(Top.Result result) {
+                _result.addAll(result.getTngou());
+                _topAdapter.notifyDataSetChanged();
+            }
+        });
          */
     }
 
