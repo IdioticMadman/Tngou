@@ -11,6 +11,7 @@ import android.net.Uri;
 
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.otto.Bus;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -22,6 +23,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.github.zengzhihao.tngou.BuildConfig;
+import io.github.zengzhihao.tngou.core.EventBus;
 import io.github.zengzhihao.tngou.core.qualifier.ForApplication;
 import io.github.zengzhihao.tngou.core.rx.ScheduleTransformer;
 import timber.log.Timber;
@@ -84,5 +86,11 @@ public class DataModule {
     @Singleton
     ScheduleTransformer provideReactiveTransformer() {
         return new ScheduleTransformer();
+    }
+
+    @Provides
+    @Singleton
+    Bus provideEventBus() {
+        return EventBus.newInstance();
     }
 }

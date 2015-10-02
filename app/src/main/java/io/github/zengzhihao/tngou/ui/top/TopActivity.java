@@ -14,9 +14,6 @@ import android.widget.ListView;
 import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle.ActivityEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -42,7 +39,6 @@ public class TopActivity extends AbstractActivity {
     ListView _listView;
 
     private TopAdapter _topAdapter;
-    private List<Top> _result = new ArrayList<>();
     private Subscription _subscription;
 
     public static void start(Context context) {
@@ -55,7 +51,7 @@ public class TopActivity extends AbstractActivity {
         setContentView(R.layout.activity_top);
         ButterKnife.bind(this);
 
-        _topAdapter = new TopAdapter(this, _result, _picasso);
+        _topAdapter = new TopAdapter(this, _picasso);
         _listView.setAdapter(_topAdapter);
 
         _subscription = bindOnIOScheduler$(_topService.list(), ActivityEvent.PAUSE).subscribe(new Observer<Top.Result>() {
@@ -71,8 +67,7 @@ public class TopActivity extends AbstractActivity {
 
             @Override
             public void onNext(Top.Result result) {
-                _result.addAll(result.getTngou());
-                _topAdapter.notifyDataSetChanged();
+                _topAdapter.setResult(result.getTngou());
             }
         });
 
@@ -91,8 +86,7 @@ public class TopActivity extends AbstractActivity {
 
             @Override
             public void onNext(Top.Result result) {
-                _result.addAll(result.getTngou());
-                _topAdapter.notifyDataSetChanged();
+                _topAdapter.setResult(result.getTngou());
             }
         });
          */

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,14 +30,18 @@ import io.github.zengzhihao.tngou.lib.api.model.Top;
  */
 public class TopAdapter extends BaseAdapter {
 
-    private List<Top> _result;
+    private List<Top> _result = new ArrayList<>();
     private LayoutInflater _layoutInflater;
     private Picasso _picasso;
 
-    public TopAdapter(Context context, List<Top> result, Picasso picasso) {
+    public TopAdapter(Context context, Picasso picasso) {
         _layoutInflater = LayoutInflater.from(context);
-        _result = result;
         _picasso = picasso;
+    }
+
+    public void setResult(List<Top> result) {
+        _result.addAll(result);
+        notifyDataSetChanged();
     }
 
     @Override
