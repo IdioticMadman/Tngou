@@ -8,12 +8,14 @@ package io.github.zengzhihao.tngou.ui.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
 
 import io.github.zengzhihao.tngou.Application;
 import io.github.zengzhihao.tngou.core.rx.ScheduleTransformer;
+import rx.Observable;
 
 /**
  * @author Kela.King
@@ -28,7 +30,14 @@ public class AbstractActivity extends RxAppCompatActivity {
         Application.getApplicationContext(this).inject(this);
     }
 
-    protected ScheduleTransformer getScheduleTransformer() {
-        return _scheduleTransformer;
+    protected <T> Observable<T> bindToLifecycle$(Observable<T> observable) {
+        return _scheduleTransformer.bindOnMainThread$(observable).compose(this.<T>bindToLifecycle
+                ());
+    }
+
+    protected <T> Observable<T> bindUntilEvent$(Observable<T> observable, ActivityEvent
+            activityEvent) {
+        return _scheduleTransformer.bindOnMainThread$(observable).compose(this.<T>bindUntilEvent
+                (activityEvent));
     }
 }

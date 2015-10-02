@@ -10,6 +10,7 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import io.github.zengzhihao.tngou.ui.base.AbstractActivity;
+import io.github.zengzhihao.tngou.ui.top.TopActivity;
 import io.github.zengzhihao.tngou.util.ToastHelper;
 
 /**
@@ -23,5 +24,7 @@ public class HomeActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _toastHelper.show("Hello Tngou!");
+        TopActivity.start(this);
+        finish();
     }
 }

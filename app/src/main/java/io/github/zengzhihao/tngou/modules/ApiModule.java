@@ -16,6 +16,7 @@ import dagger.Provides;
 import io.github.zengzhihao.tngou.BuildConfig;
 import io.github.zengzhihao.tngou.data.model.exception.ApiException;
 import io.github.zengzhihao.tngou.lib.api.ApiDefaultConfig;
+import io.github.zengzhihao.tngou.lib.api.service.TopService;
 import retrofit.Endpoint;
 import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
@@ -73,5 +74,11 @@ public class ApiModule {
         }
 
         return restAdapter;
+    }
+
+    @Provides
+    @Singleton
+    TopService provideTopService(RestAdapter restAdapter) {
+        return restAdapter.create(TopService.class);
     }
 }
