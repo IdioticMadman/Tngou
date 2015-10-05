@@ -21,7 +21,7 @@ import rx.schedulers.Schedulers;
 /**
  * @author Kela.King
  */
-public class AbstractActivity extends RxAppCompatActivity {
+public abstract class AbstractActivity extends RxAppCompatActivity {
     @Inject
     ScheduleTransformer _scheduleTransformer;
 

@@ -62,6 +62,6 @@ public class ApiException extends RuntimeException {
                 return new UnexpectedException("unexpected error", throwable);
         }
 
-        return null;
+        return new UnexpectedException("unexpected error", throwable);
     }
 }
