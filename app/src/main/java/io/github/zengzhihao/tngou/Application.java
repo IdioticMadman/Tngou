@@ -7,6 +7,8 @@ package io.github.zengzhihao.tngou;
 
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
+
 import dagger.ObjectGraph;
 import io.github.zengzhihao.tngou.core.library.Injector;
 import io.github.zengzhihao.tngou.modules.Modules;
@@ -29,6 +31,11 @@ public class Application extends android.app.Application implements Injector {
     private void _setupAnalytics() {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                            .build());
         }
     }
 

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -40,6 +41,7 @@ public class DataModule {
         okHttpClient.setReadTimeout(20000L, TimeUnit.MILLISECONDS);
 
         if (BuildConfig.DEBUG) {
+            okHttpClient.networkInterceptors().add(new StethoInterceptor());
             okHttpClient
                     .setCache(new Cache(new File(context
                             .getExternalCacheDir(), "http-cache"),
