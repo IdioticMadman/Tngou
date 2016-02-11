@@ -9,6 +9,7 @@ package io.github.zengzhihao.tngou.data.model.exception;
  * @author Kela.King
  */
 public class ServerException extends ApiException {
+
     private ApiError _apiError;
 
     public ApiError getApiError() {

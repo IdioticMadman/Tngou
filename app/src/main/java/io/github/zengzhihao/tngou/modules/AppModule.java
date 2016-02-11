@@ -20,6 +20,7 @@ import io.github.zengzhihao.tngou.util.Preconditions;
  */
 @Module(includes = {DataModule.class, UiModule.class}, complete = false, library = true)
 public class AppModule {
+
     private final Context _context;
 
     public AppModule(Application application) {
