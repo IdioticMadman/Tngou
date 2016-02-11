@@ -18,6 +18,7 @@ import timber.log.Timber;
  * @author Kela.King
  */
 public class Application extends android.app.Application implements Injector {
+
     private ObjectGraph _objectGraph;
 
     @Override

@@ -9,6 +9,7 @@ package io.github.zengzhihao.tngou.data.model.exception;
  * @author Kela.King
  */
 public class ApiError {
+
     private Long _code = -1L;
     private String _msg;
 

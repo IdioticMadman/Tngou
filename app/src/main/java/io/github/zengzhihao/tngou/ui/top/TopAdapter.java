@@ -85,6 +85,7 @@ public class TopAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
+
         @Bind(R.id.list_item_icon)
         ImageView icon;
         @Bind(R.id.list_item_title)

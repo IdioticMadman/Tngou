@@ -11,6 +11,7 @@ import java.util.List;
  * @author Kela.King
  */
 public class Top {
+
     private String title;//资讯标题
     private int topclass;//一级分类
     private String img;//图片
@@ -121,6 +122,7 @@ public class Top {
     }
 
     public class Result {
+
         private long total;
         private List<Top> tngou;
 

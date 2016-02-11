@@ -14,6 +14,7 @@ import com.squareup.otto.Bus;
  * @author Kela.King
  */
 public class EventBus extends Bus {
+
     private static Bus __BUS;
     private final Handler _handler = new Handler(Looper.getMainLooper());
 

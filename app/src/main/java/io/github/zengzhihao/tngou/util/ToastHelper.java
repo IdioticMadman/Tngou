@@ -12,6 +12,7 @@ import android.widget.Toast;
  * @author Kela.King
  */
 public class ToastHelper {
+
     private Context _context;
 
     public ToastHelper(Context context) {
