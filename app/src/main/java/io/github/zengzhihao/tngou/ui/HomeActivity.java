@@ -20,6 +20,7 @@ import io.github.zengzhihao.tngou.util.ToastHelper;
  * @author Kela.King
  */
 public class HomeActivity extends AbstractActivity {
+
     @Inject
     ToastHelper _toastHelper;
     @Inject

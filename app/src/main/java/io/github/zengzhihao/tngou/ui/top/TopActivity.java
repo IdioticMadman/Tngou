@@ -30,6 +30,7 @@ import timber.log.Timber;
  * @author Kela.King
  */
 public class TopActivity extends AbstractActivity {
+
     @Inject
     TopService _topService;
     @Inject
@@ -74,20 +75,17 @@ public class TopActivity extends AbstractActivity {
         // unsubscribed until onDestroy()
         /**
          bindOnIOScheduler$(_topService.list()).subscribe(new Observer<Top.Result>() {
-            @Override
-            public void onCompleted() {
-                Timber.i("### onCompleted.");
-            }
+        @Override public void onCompleted() {
+        Timber.i("### onCompleted.");
+        }
 
-            @Override
-            public void onError(Throwable e) {
-                Timber.e("### onError. error is %s", e);
-            }
+        @Override public void onError(Throwable e) {
+        Timber.e("### onError. error is %s", e);
+        }
 
-            @Override
-            public void onNext(Top.Result result) {
-                _topAdapter.setResult(result.getTngou());
-            }
+        @Override public void onNext(Top.Result result) {
+        _topAdapter.setResult(result.getTngou());
+        }
         });
          */
     }
