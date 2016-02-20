@@ -26,7 +26,6 @@ import dagger.Provides;
 import io.github.zengzhihao.tngou.BuildConfig;
 import io.github.zengzhihao.tngou.core.EventBus;
 import io.github.zengzhihao.tngou.core.qualifier.ForApplication;
-import io.github.zengzhihao.tngou.core.rx.ScheduleTransformer;
 import timber.log.Timber;
 
 /**
@@ -35,7 +34,7 @@ import timber.log.Timber;
 @Module(includes = {ApiModule.class, UtilsModule.class}, complete = false, library = true)
 public class DataModule {
 
-    public static OkHttpClient createOkHttpClient(Context context) {
+    private static OkHttpClient _createOkHttpClient(Context context) {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setConnectTimeout(15000L, TimeUnit.MILLISECONDS);
         okHttpClient.setReadTimeout(20000L, TimeUnit.MILLISECONDS);
@@ -56,7 +55,7 @@ public class DataModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient(@ForApplication Context context) {
-        return createOkHttpClient(context);
+        return _createOkHttpClient(context);
     }
 
     @Provides
@@ -82,12 +81,6 @@ public class DataModule {
             picasso.setIndicatorsEnabled(true);
 
         return picasso;
-    }
-
-    @Provides
-    @Singleton
-    ScheduleTransformer provideReactiveTransformer() {
-        return new ScheduleTransformer();
     }
 
     @Provides
