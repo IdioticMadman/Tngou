@@ -6,9 +6,13 @@ butterknife+dagger+otto+okhttp3+picasso+retrofit2+rxjava示例项目
 // TODO
 
 Exception 集中处理？
+
 getBodyAs 处理
+
 proguard 配置
+
 picasso download listner？
+
 upgrade to dagger2
 
 
