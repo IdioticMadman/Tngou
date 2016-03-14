@@ -5,10 +5,10 @@
 
 package io.github.zengzhihao.tngou.core;
 
+import com.squareup.otto.Bus;
+
 import android.os.Handler;
 import android.os.Looper;
-
-import com.squareup.otto.Bus;
 
 /**
  * @author Kela.King
@@ -16,11 +16,12 @@ import com.squareup.otto.Bus;
 public class EventBus extends Bus {
 
     private static Bus __BUS;
-    private final Handler _handler = new Handler(Looper.getMainLooper());
+    private final Handler _mainThread = new Handler(Looper.getMainLooper());
 
     public static Bus newInstance() {
-        if (__BUS == null)
+        if (__BUS == null) {
             __BUS = new EventBus();
+        }
 
         return __BUS;
     }
@@ -30,7 +31,7 @@ public class EventBus extends Bus {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             super.post(event);
         } else {
-            _handler.post(new Runnable() {
+            _mainThread.post(new Runnable() {
                 @Override
                 public void run() {
                     EventBus.super.post(event);

@@ -5,14 +5,13 @@
 
 package io.github.zengzhihao.tngou.ui.top;
 
+import com.squareup.picasso.Picasso;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ListView;
-
-import com.squareup.picasso.Picasso;
-import com.trello.rxlifecycle.ActivityEvent;
 
 import javax.inject.Inject;
 
@@ -23,7 +22,6 @@ import io.github.zengzhihao.tngou.lib.api.model.Top;
 import io.github.zengzhihao.tngou.lib.api.service.TopService;
 import io.github.zengzhihao.tngou.ui.base.AbstractActivity;
 import rx.Observer;
-import rx.Subscription;
 import timber.log.Timber;
 
 /**
@@ -34,13 +32,12 @@ public class TopActivity extends AbstractActivity {
     @Inject
     TopService _topService;
     @Inject
-    Picasso _picasso;
+    Picasso    _picasso;
 
     @Bind(R.id.common_list)
     ListView _listView;
 
     private TopAdapter _topAdapter;
-    private Subscription _subscription;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, TopActivity.class));
@@ -55,7 +52,7 @@ public class TopActivity extends AbstractActivity {
         _topAdapter = new TopAdapter(this, _picasso);
         _listView.setAdapter(_topAdapter);
 
-        _subscription = bind$(_topService.list(), ActivityEvent.PAUSE).subscribe(new Observer<Top.Result>() {
+        bind$(_topService.list()).subscribe(new Observer<Top.Result>() {
             @Override
             public void onCompleted() {
                 Timber.i("### onCompleted.");
@@ -71,34 +68,5 @@ public class TopActivity extends AbstractActivity {
                 _topAdapter.setResult(result.getTngou());
             }
         });
-
-        // unsubscribed until onDestroy()
-        /**
-         bindSubscribe$(_topService.list()).subscribe(new Observer<Top.Result>() {
-        @Override public void onCompleted() {
-        Timber.i("### onCompleted.");
-        }
-
-        @Override public void onError(Throwable e) {
-        Timber.e("### onError. error is %s", e);
-        }
-
-        @Override public void onNext(Top.Result result) {
-        _topAdapter.setResult(result.getTngou());
-        }
-        });
-         */
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Timber.i("### onResume. subscription is unsubscribed ? %s", _subscription.isUnsubscribed());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Timber.i("### onPause. subscription is unsubscribed ? %s", _subscription.isUnsubscribed());
     }
 }

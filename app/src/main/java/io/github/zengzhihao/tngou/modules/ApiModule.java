@@ -7,24 +7,18 @@ package io.github.zengzhihao.tngou.modules;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.github.zengzhihao.tngou.BuildConfig;
-import io.github.zengzhihao.tngou.data.model.exception.ApiException;
 import io.github.zengzhihao.tngou.lib.api.ApiDefaultConfig;
 import io.github.zengzhihao.tngou.lib.api.service.TopService;
-import retrofit.Endpoint;
-import retrofit.ErrorHandler;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Client;
-import retrofit.client.OkClient;
-import retrofit.converter.Converter;
-import retrofit.converter.GsonConverter;
+import okhttp3.OkHttpClient;
+import retrofit2.Converter;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author Kela.King
@@ -34,51 +28,32 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    Endpoint provideEndpoint() {
-        return ApiDefaultConfig.END_POINT;
-    }
-
-    @Provides
-    @Singleton
-    Client provideClient(OkHttpClient okHttpClient) {
-        return new OkClient(okHttpClient);
-    }
-
-    @Provides
-    @Singleton
     Gson provideGson() {
-        return new GsonBuilder().create();
+        GsonBuilder builder = new GsonBuilder();
+//        builder.registerTypeAdapter(T.class, new TDeserializer());
+        return builder.create();
     }
 
     @Provides
     @Singleton
-    Converter provideConverter(Gson gson) {
-        return new GsonConverter(gson);
+    Converter.Factory provideConverterFactory(Gson gson) {
+        return GsonConverterFactory.create(gson);
     }
 
     @Provides
     @Singleton
-    RestAdapter provideRestAdapter(Endpoint endpoint, Client client, Converter converter) {
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(endpoint).setClient
-                (client).setConverter(converter).setErrorHandler(new ErrorHandler() {
-            @Override
-            public Throwable handleError(RetrofitError cause) {
-                return ApiException.create(cause);
-            }
-        }).build();
-
-        if (BuildConfig.DEBUG) {
-            restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-        } else {
-            restAdapter.setLogLevel(RestAdapter.LogLevel.NONE);
-        }
-
-        return restAdapter;
+    Retrofit provideRetrofit(OkHttpClient okHttpClient, Converter.Factory converterFactory) {
+        return new Retrofit.Builder()
+                .baseUrl(ApiDefaultConfig.BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(converterFactory)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
     }
 
     @Provides
     @Singleton
-    TopService provideTopService(RestAdapter restAdapter) {
-        return restAdapter.create(TopService.class);
+    TopService provideTopService(Retrofit retrofit) {
+        return retrofit.create(TopService.class);
     }
 }

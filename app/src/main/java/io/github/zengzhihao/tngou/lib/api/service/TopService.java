@@ -6,7 +6,7 @@
 package io.github.zengzhihao.tngou.lib.api.service;
 
 import io.github.zengzhihao.tngou.lib.api.model.Top;
-import retrofit.http.GET;
+import retrofit2.http.GET;
 import rx.Observable;
 
 /**
@@ -14,6 +14,6 @@ import rx.Observable;
  */
 public interface TopService {
 
-    @GET("/top/list")
+    @GET("top/list")
     Observable<Top.Result> list();
 }

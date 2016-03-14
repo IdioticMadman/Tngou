@@ -5,15 +5,11 @@
 
 package io.github.zengzhihao.tngou.lib.api;
 
-import retrofit.Endpoint;
-import retrofit.Endpoints;
-
 /**
  * @author Kela.King
  */
 public class ApiDefaultConfig {
 
-    public static final Endpoint END_POINT = Endpoints.newFixedEndpoint("http://www.tngou.net/api",
-            "base-url");
-    public static final String IMG_URL = "http://tnfs.tngou.net/img";
+    public static final String BASE_URL = "http://www.tngou.net/api/";
+    public static final String IMG_URL  = "http://tnfs.tngou.net/img";
 }
