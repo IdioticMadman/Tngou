@@ -5,13 +5,13 @@
 
 package io.github.zengzhihao.tngou.ui.top;
 
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ListView;
+
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -32,7 +32,7 @@ public class TopActivity extends AbstractActivity {
     @Inject
     TopService _topService;
     @Inject
-    Picasso    _picasso;
+    Picasso _picasso;
 
     @Bind(R.id.common_list)
     ListView _listView;
