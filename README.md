@@ -11,7 +11,7 @@ butterknife+dagger+otto+okhttp3+picasso+retrofit2+rxjava示例项目
 
 proguard 配置
 
-picasso download listner
+picasso download listener
 
 upgrade to dagger2
 
