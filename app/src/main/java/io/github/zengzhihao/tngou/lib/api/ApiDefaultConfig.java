@@ -10,6 +10,6 @@ package io.github.zengzhihao.tngou.lib.api;
  */
 public class ApiDefaultConfig {
 
-    public static final String BASE_URL = "http://www.tngou.net/api/";
-    public static final String IMG_URL  = "http://tnfs.tngou.net/img";
+    public static final String BASE_ENDPOINT = "http://www.tngou.net/api/";
+    public static final String IMG_URL       = "http://tnfs.tngou.net/img";
 }

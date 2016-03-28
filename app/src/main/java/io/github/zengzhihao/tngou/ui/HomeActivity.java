@@ -5,24 +5,21 @@
 
 package io.github.zengzhihao.tngou.ui;
 
-import android.os.Bundle;
-
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import android.os.Bundle;
 
 import javax.inject.Inject;
 
 import io.github.zengzhihao.tngou.ui.base.AbstractActivity;
 import io.github.zengzhihao.tngou.ui.top.TopActivity;
-import io.github.zengzhihao.tngou.util.ToastHelper;
 
 /**
  * @author Kela.King
  */
 public class HomeActivity extends AbstractActivity {
 
-    @Inject
-    ToastHelper _toastHelper;
     @Inject
     Bus _bus;
 
@@ -31,8 +28,12 @@ public class HomeActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
 
         _bus.register(this);
-        _toastHelper.show("Hello Tngou!");
         _bus.post(new OnStartTopActivityEvent());
+    }
+
+    @Override
+    public void injectMembers() {
+        getComponent().inject(this);
     }
 
     @Subscribe

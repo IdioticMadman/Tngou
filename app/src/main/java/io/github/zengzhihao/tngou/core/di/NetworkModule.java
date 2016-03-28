@@ -1,28 +1,19 @@
-/*
- * Copyright 2015 zengzhihao.github.io. All rights reserved.
- * Support: http://zengzhihao.github.io
- */
-
-package io.github.zengzhihao.tngou.modules;
+package io.github.zengzhihao.tngou.core.di;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.github.zengzhihao.tngou.BuildConfig;
-import io.github.zengzhihao.tngou.core.EventBus;
+import io.github.zengzhihao.tngou.core.qualifier.ApplicationScope;
 import io.github.zengzhihao.tngou.core.qualifier.ForApplication;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -30,10 +21,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import timber.log.Timber;
 
 /**
- * @author Kela.King
+ * Created by kela.king on 16/3/28.
  */
-@Module(includes = {ApiModule.class, UtilsModule.class}, complete = false, library = true)
-public class DataModule {
+@Module
+public class NetworkModule {
 
     private static final long   OKCLIENT_DISK_CACHE_SIZE = 20 * 1024 * 1024;
     private static final String OKCLIENT_DISK_CACHE_NAME = "http-cache";
@@ -60,19 +51,13 @@ public class DataModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     OkHttpClient provideOkHttpClient(@ForApplication Context context) {
         return _createOkHttpClient(context);
     }
 
     @Provides
-    @Singleton
-    SharedPreferences provideSharedPreferences(@ForApplication Context context) {
-        return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
-    }
-
-    @Provides
-    @Singleton
+    @ApplicationScope
     Picasso providePicasso(@ForApplication Context context, OkHttpClient okHttpClient) {
         OkHttpClient.Builder builder = okHttpClient.newBuilder();
         builder.interceptors().clear();
@@ -94,11 +79,5 @@ public class DataModule {
         }
 
         return picasso;
-    }
-
-    @Provides
-    @Singleton
-    Bus provideEventBus() {
-        return EventBus.newInstance();
     }
 }
