@@ -6,6 +6,7 @@
 package io.github.zengzhihao.tngou;
 
 import com.facebook.stetho.Stetho;
+import com.frogermcs.androiddevmetrics.AndroidDevMetrics;
 
 import android.content.Context;
 
@@ -38,6 +39,7 @@ public class Application extends android.app.Application
     private void _setupAnalytics() {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            AndroidDevMetrics.initWith(this);
             Stetho.initialize(
                     Stetho.newInitializerBuilder(this)
                             .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
