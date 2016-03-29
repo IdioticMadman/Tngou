@@ -3,8 +3,19 @@
  * Support: http://zengzhihao.github.io
  */
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.frogermcs.androiddevmetrics:androiddevmetrics-plugin:0.4'
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.frogermcs.androiddevmetrics'
 
 android {
     compileSdkVersion 23
