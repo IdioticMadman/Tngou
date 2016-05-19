@@ -5,22 +5,27 @@
 
 package io.github.zengzhihao.tngou.ui.top;
 
+import com.squareup.picasso.Picasso;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ListView;
 
-import com.squareup.picasso.Picasso;
-
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.zengzhihao.tngou.R;
+import io.github.zengzhihao.tngou.core.qualifier.ClientVersionCode;
+import io.github.zengzhihao.tngou.core.qualifier.ClientVersionName;
+import io.github.zengzhihao.tngou.data.model.exception.ApiException;
 import io.github.zengzhihao.tngou.lib.api.model.Top;
 import io.github.zengzhihao.tngou.lib.api.service.TopService;
 import io.github.zengzhihao.tngou.ui.base.AbstractActivity;
+import io.github.zengzhihao.tngou.util.ToastHelper;
+import retrofit2.Retrofit;
 import rx.Observer;
 import timber.log.Timber;
 
@@ -30,9 +35,19 @@ import timber.log.Timber;
 public class TopActivity extends AbstractActivity {
 
     @Inject
-    TopService _topService;
+    TopService  _topService;
     @Inject
-    Picasso _picasso;
+    Picasso     _picasso;
+    @Inject
+    @ClientVersionCode
+    int         _versionCode;
+    @Inject
+    @ClientVersionName
+    String      _versionName;
+    @Inject
+    ToastHelper _toastHelper;
+    @Inject
+    Retrofit    _retrofit;
 
     @Bind(R.id.common_list)
     ListView _listView;
@@ -56,11 +71,14 @@ public class TopActivity extends AbstractActivity {
             @Override
             public void onCompleted() {
                 Timber.i("### onCompleted.");
+                _toastHelper.show("Just fucking, never stop! App version is " + _versionName + "-"
+                        + _versionCode);
             }
 
             @Override
             public void onError(Throwable e) {
-                Timber.e("### onError. error is %s", e);
+                ApiException exception = ApiException.create(e, _retrofit);
+                // Do what you want with exception.
             }
 
             @Override
@@ -68,5 +86,10 @@ public class TopActivity extends AbstractActivity {
                 _topAdapter.setResult(result.getTngou());
             }
         });
+    }
+
+    @Override
+    public void injectMembers() {
+        getComponent().inject(this);
     }
 }

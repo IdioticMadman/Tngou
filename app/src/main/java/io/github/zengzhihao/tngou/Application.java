@@ -5,21 +5,28 @@
 
 package io.github.zengzhihao.tngou;
 
+import com.facebook.stetho.Stetho;
+import com.frogermcs.androiddevmetrics.AndroidDevMetrics;
+
 import android.content.Context;
 
-import com.facebook.stetho.Stetho;
-
-import dagger.ObjectGraph;
-import io.github.zengzhihao.tngou.core.library.Injector;
-import io.github.zengzhihao.tngou.modules.Modules;
+import io.github.zengzhihao.tngou.core.di.AndroidModule;
+import io.github.zengzhihao.tngou.core.di.ApiModule;
+import io.github.zengzhihao.tngou.core.di.ApplicationComponent;
+import io.github.zengzhihao.tngou.core.di.DaggerApplicationComponent;
+import io.github.zengzhihao.tngou.core.di.DataModule;
+import io.github.zengzhihao.tngou.core.di.HasComponent;
+import io.github.zengzhihao.tngou.core.di.NetworkModule;
+import io.github.zengzhihao.tngou.core.di.UtilsModule;
 import timber.log.Timber;
 
 /**
  * @author Kela.King
  */
-public class Application extends android.app.Application implements Injector {
+public class Application extends android.app.Application
+        implements HasComponent<ApplicationComponent> {
 
-    private ObjectGraph _objectGraph;
+    private ApplicationComponent _component;
 
     @Override
     public void onCreate() {
@@ -32,6 +39,7 @@ public class Application extends android.app.Application implements Injector {
     private void _setupAnalytics() {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            AndroidDevMetrics.initWith(this);
             Stetho.initialize(
                     Stetho.newInitializerBuilder(this)
                             .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
@@ -41,15 +49,21 @@ public class Application extends android.app.Application implements Injector {
     }
 
     private void _buildObjectGraph() {
-        _objectGraph = ObjectGraph.create(Modules.list(this));
+        _component = DaggerApplicationComponent.builder()
+                .androidModule(new AndroidModule(this))
+                .dataModule(new DataModule())
+                .networkModule(new NetworkModule())
+                .apiModule(new ApiModule())
+                .utilsModule(new UtilsModule())
+                .build();
     }
 
     @Override
-    public <T> T inject(T t) {
-        return _objectGraph.inject(t);
+    public ApplicationComponent getComponent() {
+        return _component;
     }
 
-    public static Application getApplicationContext(Context context) {
+    public static Application from(Context context) {
         return (Application) context.getApplicationContext();
     }
 }

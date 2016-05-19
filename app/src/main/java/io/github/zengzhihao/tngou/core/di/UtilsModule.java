@@ -1,27 +1,21 @@
-/*
- * Copyright 2015 zengzhihao.github.io. All rights reserved.
- * Support: http://zengzhihao.github.io
- */
-
-package io.github.zengzhihao.tngou.modules;
+package io.github.zengzhihao.tngou.core.di;
 
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import io.github.zengzhihao.tngou.core.qualifier.ApplicationScope;
 import io.github.zengzhihao.tngou.core.qualifier.ForApplication;
 import io.github.zengzhihao.tngou.util.ToastHelper;
 
 /**
- * @author Kela.King
+ * Created by kela.king on 16/3/28.
  */
-@Module(complete = false, library = true)
+@Module
 public class UtilsModule {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     ToastHelper provideToastHelper(@ForApplication Context context) {
         return new ToastHelper(context);
     }
